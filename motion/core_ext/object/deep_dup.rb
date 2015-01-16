@@ -21,7 +21,13 @@ class Array
   #   dup[1][2] = 4
   #
   #   array[1][2] #=> nil
-  #   dup[1][2]   #=> 4
+  #
+  def deep_dup
+    map { |it| it.deep_dup }
+  end
+end
+
+class NSArray
   def deep_dup
     map { |it| it.deep_dup }
   end
@@ -42,3 +48,12 @@ class Hash
     end
   end
 end
+
+class NSDictionary
+  def deep_dup
+    each_with_object(dup) do |(key, value), hash|
+      hash[key.deep_dup] = value.deep_dup
+    end
+  end
+end
+
